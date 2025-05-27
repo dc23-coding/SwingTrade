@@ -1,0 +1,49 @@
+import React, { createContext, useState, useEffect } from 'react';
+import axios from 'axios';
+
+export const AuthContext = createContext();
+
+export const AuthProvider = ({ children }) => {
+  // Read any existing token from localStorage
+  const [token, setToken] = useState(
+    () => window.localStorage.getItem('authToken')
+  );
+
+  // Whenever `token` changes, persist it and update Axios headers
+  useEffect(() => {
+    if (token) {
+      window.localStorage.setItem('authToken', token);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    } else {
+      window.localStorage.removeItem('authToken');
+      delete axios.defaults.headers.common['Authorization'];
+    }
+  }, [token]);
+
+  // Called by your Login form to perform the POST /login
+  const login = async (username, password) => {
+    const res = await axios.post(
+      `${import.meta.env.VITE_API_URL}/login`,
+      { username, password }
+    );
+    // server returns { token: "..." }
+    setToken(res.data.token);
+  };
+
+  // Clears out the token
+  const logout = () => {
+    setToken(null);
+  };
+
+  return (
+    <AuthContext.Provider
+      value={{
+        isAuthenticated: Boolean(token),
+        login,
+        logout
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+};

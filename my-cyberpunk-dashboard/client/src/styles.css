@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* src/styles.css */
+:root {
+  --neon-green: #00ff99;
+  --neon-red: #ff3366;
+  --neon-blue: #00ccff;
+  --neon-purple: #cc33ff;
+  --neon-pink: #ff66cc;
+}
+
+.border-neon-green {
+  border-color: var(--neon-green);
+}
+
+.text-neon-green {
+  color: var(--neon-green);
+}
+
+.text-neon-pink {
+  color: var(--neon-pink);
+}
+
+.bg-neon-blue {
+  background-color: var(--neon-blue);
+}
+
+.bg-neon-purple {
+  background-color: var(--neon-purple);
+}
+
+.hover\:bg-neon-blue-dark:hover {
+  background-color: #0099cc;
+}
+
+.hover\:bg-neon-purple-dark:hover {
+  background-color: #9922cc;
+}
